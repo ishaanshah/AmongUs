@@ -5,9 +5,12 @@
 #define WIDTH 1920
 #define HEIGHT 1080
 
-// Number rows and columns in the mazd
+// Number rows and columns in the maze
 #define NCOLS 16
 #define NROWS 9
+
+// Dimension of cell
+#define WALL_SIZE 10
 
 // RGB values for different colors
 // TODO: Set to nord theme

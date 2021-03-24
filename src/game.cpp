@@ -3,6 +3,7 @@
 #include "constants.hpp"
 #include "game.hpp"
 #include "game_object.hpp"
+#include "maze/maze.hpp"
 #include "utils/resource_manager.hpp"
 
 #include "glm/fwd.hpp"
@@ -24,39 +25,14 @@ void Game::Init() {
     // Set projection matrix
     ResourceManager::GetShader("object").Use().SetMatrix4("projection", projection);
 
-    // TODO: Put object creation over here
-    std::vector<float> vertices1 {
-        0.0f, 0.0f,
-        10.0f, 0.0f,
-        10.0f, 1080.0f,
+    // Create maze object
+    Maze maze = Maze();
 
-        0.0f, 0.0f,
-        0.0f, 1080.0f,
-        10.0f, 1080.0f
-    };
-    std::vector<float> vertices2 {
-        0.0f, 0.0f,
-        1920.0f, 0.0f,
-        1920.0f, 10.0f,
+    // Generate maze
+    std::vector<GameObject> walls = maze.GenerateMaze();
 
-        0.0f, 0.0f,
-        0.0f, 10.0f,
-        1920.0f, 10.0f
-    };
-    for (int i = 0; i <= NCOLS; i++) {
-        float x = i * (1920.0f / NCOLS) - 5;
-        this->Objects.push_back(GameObject(glm::vec2(x, 0.0f),
-                                           glm::vec2(1.0f, 1.0f),
-                                           COLOR_RED,
-                                           vertices1));
-    }
-    for (int i = 0; i <= NROWS; i++) {
-        float y = i * (1080.0f / NROWS) - 5;
-        this->Objects.push_back(GameObject(glm::vec2(0.0f, y),
-                                           glm::vec2(1.0f, 1.0f),
-                                           COLOR_RED,
-                                           vertices2));
-    }
+    // TODO: Unique duplicate walls
+    this->Objects.insert(this->Objects.begin(), walls.begin(), walls.end());
 }
 
 void Game::Update(float dt) {
