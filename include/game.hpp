@@ -2,6 +2,11 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include <vector>
+
+#include "game_object.hpp"
+#include "utils/shader.hpp"
+
 // Current state of the game
 enum GameState  {
     GAME_ACTIVE,
@@ -13,10 +18,12 @@ enum GameState  {
 class Game {
     public:
         GameState State;
+        std::vector<GameObject> Objects;
         bool Keys[1024];
         unsigned int Width, Height;
+
         Game(unsigned int width, unsigned int height);
-        ~Game();
+
         void Init();
         void ProcessInput(float dt);
         void Update(float dt);

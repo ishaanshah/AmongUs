@@ -10,6 +10,7 @@ set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 # Add source files to project
 set(SOURCES ${SRC_DIR}/main.cpp
             ${SRC_DIR}/game.cpp
+            ${SRC_DIR}/game_object.cpp
             ${SRC_DIR}/utils/resource_manager.cpp
             ${SRC_DIR}/utils/shader.cpp)
 

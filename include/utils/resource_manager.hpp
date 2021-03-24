@@ -12,10 +12,13 @@
 class ResourceManager {
     public:
         // Resource storage
-        static std::map<std::string, Shader>    Shaders;
+        static std::map<std::string, Shader> Shaders;
 
-        // Loads (and generates) a shader program from file loading vertex, fragment (and geometry) shader's source code. If gShaderFile is not nullptr, it also loads a geometry shader
-        static Shader LoadShader(const char *vShaderFile, const char *fShaderFile, const char *gShaderFile, std::string name);
+        // Loads (and generates) a shader program from file loading vertex, fragment
+        // (and geometry) shader's source code. If gShaderFile is not nullptr,
+        // it also loads a geometry shader
+        static Shader LoadShader(const char *vShaderFile, const char *fShaderFile,
+                                 const char *gShaderFile, std::string name);
 
         // Retrieves a stored sader
         static Shader GetShader(std::string name);

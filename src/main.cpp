@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 
 #include "game.hpp"
+#include "constants.hpp"
 #include "utils/resource_manager.hpp"
 
 #include <iostream>
@@ -11,9 +12,9 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
 // The width of the screen
-const unsigned int SCREEN_WIDTH = 1920;
+const unsigned int SCREEN_WIDTH = WIDTH;
 // The height of the screen
-const unsigned int SCREEN_HEIGHT = 1080;
+const unsigned int SCREEN_HEIGHT = HEIGHT;
 
 Game AmongUs(SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -66,7 +67,7 @@ int main(int argc, char *argv[]) {
         AmongUs.Update(deltaTime);
 
         // Render
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(COLOR_BLACK[0], COLOR_BLACK[1], COLOR_BLACK[2], 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
         AmongUs.Render();
 
