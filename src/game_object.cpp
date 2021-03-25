@@ -40,9 +40,23 @@ std::vector<GameObject> GameObject::Move(enum Direction direction,
                                          const std::vector<GameObject> &hittables,
                                          float velocity) {
     std::vector<GameObject> hits;
-    if (this->IsSolid) {
-        return hits;
+
+    glm::vec2 newPosition(this->Position);
+    if (direction == LEFT) {
+        newPosition.x -= velocity;
     }
+    if (direction == RIGHT) {
+        newPosition.x += velocity;
+    }
+    if (direction == UP) {
+        newPosition.y -= velocity;
+    }
+    if (direction == DOWN) {
+        newPosition.y += velocity;
+    }
+
+    // TODO: Check collisions
+    this->Position = newPosition;
 
     return hits;
 }

@@ -1,5 +1,7 @@
 /* Source for class which stores all the information about the game */
 
+#include <GLFW/glfw3.h>
+
 #include "constants.hpp"
 #include "game.hpp"
 #include "game_object.hpp"
@@ -33,11 +35,10 @@ void Game::Init() {
     this->Objects.insert(this->Objects.begin(), walls.begin(), walls.end());
 
     // Create player
-    Character player = Character(glm::vec2(CHARACTER_SIZE / 2, CHARACTER_SIZE),
+    this->Player = new Character(glm::vec2(CHARACTER_SIZE / 2, CHARACTER_SIZE),
                                  glm::vec2(1.0f, 1.0f),
                                  Character::generateVerts(COLOR_YELLOW),
                                  COLOR_YELLOW);
-    this->Objects.push_back(player);
 }
 
 void Game::Update(float dt) {
@@ -45,11 +46,26 @@ void Game::Update(float dt) {
 }
 
 void Game::ProcessInput(float dt) {
-    // TODO: Pretty clear what should go over here
+    if (this->State == GAME_ACTIVE) {
+        float velocity = CHARACTER_VELOCITY * dt;
+        if (this->Keys[GLFW_KEY_D]) {
+            this->Player->Move(RIGHT, this->Objects, velocity);
+        }
+        if (this->Keys[GLFW_KEY_A]) {
+            this->Player->Move(LEFT, this->Objects, velocity);
+        }
+        if (this->Keys[GLFW_KEY_W]) {
+            this->Player->Move(UP, this->Objects, velocity);
+        }
+        if (this->Keys[GLFW_KEY_S]) {
+            this->Player->Move(DOWN, this->Objects, velocity);
+        }
+    }
 }
 
 void Game::Render() {
     for (auto object: this->Objects) {
         object.Render();
     }
+    this->Player->Render();
 }

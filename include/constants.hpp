@@ -14,6 +14,7 @@
 
 // Dimensions of character
 #define CHARACTER_SIZE 54
+#define CHARACTER_VELOCITY 150
 
 // Circle resolution
 #define CIRCLE_RES 20
