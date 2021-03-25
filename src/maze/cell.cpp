@@ -48,22 +48,22 @@ std::vector<GameObject> Cell::GenerateWalls() {
     float cellSizeY = (float)HEIGHT / NROWS;
 
     std::vector<float> vertsVertical {
-        0.0f, 0.0f,
-        WALL_SIZE, 0.0f,
-        WALL_SIZE, cellSizeY + WALL_SIZE,
+        0.0f, 0.0f, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b,
+        WALL_SIZE, 0.0f, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b,
+        WALL_SIZE, cellSizeY + WALL_SIZE, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b,
 
-        0.0f, 0.0f,
-        0.0f, cellSizeY + WALL_SIZE,
-        WALL_SIZE, cellSizeY + WALL_SIZE
+        0.0f, 0.0f, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b,
+        0.0f, cellSizeY + WALL_SIZE, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b,
+        WALL_SIZE, cellSizeY + WALL_SIZE, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b
     };
     std::vector<float> vertsHorizontal {
-        0.0f, 0.0f,
-        cellSizeX + WALL_SIZE, 0.0f,
-        cellSizeX + WALL_SIZE, WALL_SIZE,
+        0.0f, 0.0f, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b,
+        cellSizeX + WALL_SIZE, 0.0f, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b,
+        cellSizeX + WALL_SIZE, WALL_SIZE, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b,
 
-        0.0f, 0.0f,
-        0.0f, WALL_SIZE,
-        cellSizeX + WALL_SIZE, WALL_SIZE
+        0.0f, 0.0f, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b,
+        0.0f, WALL_SIZE, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b,
+        cellSizeX + WALL_SIZE, WALL_SIZE, COLOR_RED.r, COLOR_RED.g, COLOR_RED.b
     };
 
     // Left wall
@@ -73,7 +73,8 @@ std::vector<GameObject> Cell::GenerateWalls() {
         walls.push_back(GameObject(glm::vec2(x, y),
                                    glm::vec2(1.0f, 1.0f),
                                    COLOR_RED,
-                                   vertsVertical));
+                                   vertsVertical,
+                                   true));
     }
 
     // Right wall
@@ -83,7 +84,8 @@ std::vector<GameObject> Cell::GenerateWalls() {
         walls.push_back(GameObject(glm::vec2(x, y),
                                    glm::vec2(1.0f, 1.0f),
                                    COLOR_RED,
-                                   vertsVertical));
+                                   vertsVertical,
+                                   true));
     }
 
     // Top wall
@@ -93,7 +95,8 @@ std::vector<GameObject> Cell::GenerateWalls() {
         walls.push_back(GameObject(glm::vec2(x, y),
                                    glm::vec2(1.0f, 1.0f),
                                    COLOR_RED,
-                                   vertsHorizontal));
+                                   vertsHorizontal,
+                                   true));
     }
 
     // Bottom wall
@@ -103,7 +106,8 @@ std::vector<GameObject> Cell::GenerateWalls() {
         walls.push_back(GameObject(glm::vec2(x, y),
                                    glm::vec2(1.0f, 1.0f),
                                    COLOR_RED,
-                                   vertsHorizontal));
+                                   vertsHorizontal,
+                                   true));
     }
 
     return walls;

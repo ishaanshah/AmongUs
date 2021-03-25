@@ -5,9 +5,9 @@
 #include "../lib/prettyprint.hpp"
 
 GameObject::GameObject(glm::vec2 Position, glm::vec2 Direction,
-                       glm::vec3 Color, std::vector<float> Vertices) : 
+                       glm::vec3 Color, std::vector<float> Vertices, bool IsSolid) : 
                        Position(Position), Direction(Direction),
-                       Color(Color), Vertices(Vertices) {
+                       Color(Color), Vertices(Vertices), IsSolid(IsSolid) {
     // Configure VAO/VBO
     unsigned int VBO;
 
@@ -19,14 +19,33 @@ GameObject::GameObject(glm::vec2 Position, glm::vec2 Direction,
                  this->Vertices.data(), GL_STATIC_DRAW);
 
     glBindVertexArray(this->VAO);
+
+    // Coordinate data
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+
+    // Color data
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float),
+                          (void*)(2 * sizeof(float)));
+
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
 
 std::vector<glm::vec2> GameObject::GetBoundBox() {
     // TODO: Complete this function
+}
+
+std::vector<GameObject> GameObject::Move(enum Direction direction,
+                                         const std::vector<GameObject> &hittables,
+                                         float velocity) {
+    std::vector<GameObject> hits;
+    if (this->IsSolid) {
+        return hits;
+    }
+
+    return hits;
 }
 
 // Renders the object
@@ -40,9 +59,8 @@ void GameObject::Render() {
 
     // TODO: Figure out flip
     shader.SetMatrix4("model", model);
-    shader.SetVector3f("aColor", this->Color);
 
     glBindVertexArray(this->VAO);
-    glDrawArrays(GL_TRIANGLES, 0, this->Vertices.size() / 2);
+    glDrawArrays(GL_TRIANGLES, 0, this->Vertices.size() / 5);
     glBindVertexArray(0);
 }
