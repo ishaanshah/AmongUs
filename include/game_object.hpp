@@ -21,11 +21,10 @@ class GameObject {
     public:
         bool IsSolid;
         glm::vec2 Position, Direction;
-        glm::vec3 Color;
 
         // Constructor
         GameObject(glm::vec2 Position, glm::vec2 Direction,
-                   glm::vec3 Color, std::vector<float> Vertices, bool IsSolid);
+                   std::vector<float> Vertices, bool IsSolid);
 
         // Gets bounding box of the object
         std::vector<glm::vec2> GetBoundBox();

@@ -4,9 +4,8 @@
 #include "game.hpp"
 #include "game_object.hpp"
 #include "maze/maze.hpp"
+#include "objects/character.hpp"
 #include "utils/resource_manager.hpp"
-
-#include "glm/fwd.hpp"
 
 Game::Game(unsigned int width, unsigned int height) 
     : State(GAME_ACTIVE), Keys(), Width(width), Height(height) {  }
@@ -29,10 +28,16 @@ void Game::Init() {
     Maze maze = Maze();
 
     // Generate maze
-    std::vector<GameObject> walls = maze.GenerateMaze();
-
     // TODO: Unique duplicate walls
+    std::vector<GameObject> walls = maze.GenerateMaze();
     this->Objects.insert(this->Objects.begin(), walls.begin(), walls.end());
+
+    // Create player
+    Character player = Character(glm::vec2(CHARACTER_SIZE / 2, CHARACTER_SIZE),
+                                 glm::vec2(1.0f, 1.0f),
+                                 Character::generateVerts(COLOR_YELLOW),
+                                 COLOR_YELLOW);
+    this->Objects.push_back(player);
 }
 
 void Game::Update(float dt) {

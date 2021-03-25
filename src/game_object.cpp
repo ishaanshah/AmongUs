@@ -2,12 +2,11 @@
 
 #include "game_object.hpp"
 #include "utils/resource_manager.hpp"
-#include "../lib/prettyprint.hpp"
 
 GameObject::GameObject(glm::vec2 Position, glm::vec2 Direction,
-                       glm::vec3 Color, std::vector<float> Vertices, bool IsSolid) : 
+                       std::vector<float> Vertices, bool IsSolid) : 
                        Position(Position), Direction(Direction),
-                       Color(Color), Vertices(Vertices), IsSolid(IsSolid) {
+                       Vertices(Vertices), IsSolid(IsSolid) {
     // Configure VAO/VBO
     unsigned int VBO;
 
