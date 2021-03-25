@@ -5,10 +5,10 @@
 
 class Maze {
     public:
-        int nrows, ncols;
         std::vector<std::vector<Cell> > Cells;
 
         Maze();
 
         std::vector<GameObject> GenerateMaze();
+        void RandomDFS(Cell &cell);
 };

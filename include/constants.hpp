@@ -10,7 +10,7 @@
 #define NROWS 9
 
 // Dimension of cell
-#define WALL_SIZE 10
+#define WALL_SIZE 6
 
 // RGB values for different colors
 // TODO: Set to nord theme

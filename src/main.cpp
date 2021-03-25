@@ -6,6 +6,7 @@
 #include "utils/resource_manager.hpp"
 
 #include <iostream>
+#include <cstdlib>
 
 // GLFW function declarations
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -19,6 +20,8 @@ const unsigned int SCREEN_HEIGHT = HEIGHT;
 Game AmongUs(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 int main(int argc, char *argv[]) {
+    srand(time(0));
+
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);

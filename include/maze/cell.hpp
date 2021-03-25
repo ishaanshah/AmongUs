@@ -15,7 +15,7 @@ class Cell {
 
         Cell(std::pair<int, int> Position);
 
-        std::vector<Cell> GetNeigbours();
+        std::vector<glm::vec4> GetNeighbours();
         std::vector<GameObject> GenerateWalls();
 };
 

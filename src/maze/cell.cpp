@@ -7,8 +7,38 @@ Cell::Cell(std::pair<int, int> Position) : Position(Position),
                                            Visited(false),
                                            Walls({true, true, true, true}) { }
 
-std::vector<Cell> Cell::GetNeigbours() {
+std::vector<glm::vec4> Cell::GetNeighbours() {
+    std::vector<glm::vec4> neighbours;
 
+    // Left neighbour
+    if (this->Position.first != 0) {
+        neighbours.push_back(glm::vec4(this->Position.first-1,
+                                       this->Position.second,
+                                       0, 2));
+    }
+
+    // Right neighbour
+    if (this->Position.first != NCOLS-1) {
+        neighbours.push_back(glm::vec4(this->Position.first+1,
+                                       this->Position.second,
+                                       2, 0));
+    }
+
+    // Top neighbour
+    if (this->Position.second != 0) {
+        neighbours.push_back(glm::vec4(this->Position.first,
+                                       this->Position.second-1,
+                                       1, 3));
+    }
+
+    // Bottom neighbour
+    if (this->Position.second != NROWS-1) {
+        neighbours.push_back(glm::vec4(this->Position.first,
+                                       this->Position.second+1,
+                                       3, 1));
+    }
+
+    return neighbours;
 }
 
 std::vector<GameObject> Cell::GenerateWalls() {
