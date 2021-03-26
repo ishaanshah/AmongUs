@@ -19,6 +19,9 @@
 // Circle resolution
 #define CIRCLE_RES 20
 
+// Time limit
+#define TIME_LIMIT 120.0f
+
 // RGB values for different colors
 // TODO: Set to nord theme
 #define COLOR_RED glm::vec3(1.0f, 0.0f, 0.0f)

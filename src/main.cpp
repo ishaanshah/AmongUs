@@ -63,11 +63,8 @@ int main(int argc, char *argv[]) {
         lastFrame = currentFrame;
         glfwPollEvents();
 
-        // Manage user input
-        AmongUs.ProcessInput(deltaTime);
-
         // Update game state
-        AmongUs.Update(deltaTime);
+        AmongUs.Update(deltaTime, window);
 
         // Render
         glClearColor(COLOR_BLACK[0], COLOR_BLACK[1], COLOR_BLACK[2], 1.0f);

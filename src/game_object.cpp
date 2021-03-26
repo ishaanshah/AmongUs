@@ -90,8 +90,8 @@ std::vector<GameObject *> GameObject::Move(enum Direction direction,
         bool collision = collisionX && collisionY;
         if (collision && !hittable.IsSolid) {
             hits.push_back(&hittable);
-            commitMove = false;
         }
+        commitMove = commitMove && !(collision && hittable.IsSolid);
     }
     if (!commitMove) {
         this->Position = oldPosition;

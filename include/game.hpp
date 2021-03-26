@@ -2,6 +2,7 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
+#include <GLFW/glfw3.h>
 #include <vector>
 
 #include "game_object.hpp"
@@ -18,17 +19,18 @@ enum GameState  {
 // Class to store information about the current game
 class Game {
     public:
-        GameState State;
-        std::vector<GameObject> Walls;
-        bool Keys[1024];
-        unsigned int Width, Height;
         Character *Player, *Imposter;
+        GameState State;
+        bool Keys[1024];
+        float Time;
+        int Score, Health;
+        std::vector<GameObject> Walls;
+        unsigned int Width, Height;
 
         Game(unsigned int width, unsigned int height);
 
         void Init();
-        void ProcessInput(float dt);
-        void Update(float dt);
+        void Update(float dt, GLFWwindow *window);
         void Render();
 };
 

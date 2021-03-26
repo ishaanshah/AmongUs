@@ -9,8 +9,9 @@
 #include "objects/character.hpp"
 #include "utils/resource_manager.hpp"
 
-Game::Game(unsigned int width, unsigned int height) 
-    : State(GAME_ACTIVE), Keys(), Width(width), Height(height) {  }
+Game::Game(unsigned int width, unsigned int height) :
+           State(GAME_ACTIVE), Keys(), Width(width), Height(height),
+           Score(0), Health(100), Time(TIME_LIMIT) {  }
 
 void Game::Init() {
     // Load the object shader program
@@ -52,11 +53,8 @@ void Game::Init() {
                                    COLOR_RED);
 }
 
-void Game::Update(float dt) {
-    // TODO: Check collision stuff here ig
-}
-
-void Game::ProcessInput(float dt) {
+void Game::Update(float dt, GLFWwindow *window) {
+    // Process input
     if (this->State == GAME_ACTIVE) {
         float velocity = CHARACTER_VELOCITY * dt;
         if (this->Keys[GLFW_KEY_D]) {
@@ -71,6 +69,19 @@ void Game::ProcessInput(float dt) {
         if (this->Keys[GLFW_KEY_S]) {
             this->Player->Move(DOWN, this->Walls, velocity);
         }
+    }
+
+    // TODO: Check collision stuff here ig
+    // Update time
+    this->Time -= dt;
+    if (this->Time <= 0.0f) {
+        glfwSetWindowShouldClose(window, true);
+        return;
+    }
+
+    // Check if player health is enough
+    if (this->Health <= 0) {
+        glfwSetWindowShouldClose(window, true);
     }
 }
 
