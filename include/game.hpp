@@ -19,10 +19,10 @@ enum GameState  {
 class Game {
     public:
         GameState State;
-        std::vector<GameObject> Objects;
+        std::vector<GameObject> Walls;
         bool Keys[1024];
         unsigned int Width, Height;
-        Character *Player;
+        Character *Player, *Imposter;
 
         Game(unsigned int width, unsigned int height);
 

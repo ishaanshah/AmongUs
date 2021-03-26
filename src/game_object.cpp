@@ -6,7 +6,7 @@
 GameObject::GameObject(glm::vec2 Position, glm::vec2 Direction,
                        std::vector<float> Vertices, bool IsSolid) : 
                        Position(Position), Direction(Direction),
-                       Vertices(Vertices), IsSolid(IsSolid) {
+                       Vertices(Vertices), IsSolid(IsSolid), IsVisible(true) {
     // Configure VAO/VBO
     unsigned int VBO;
 
@@ -88,10 +88,10 @@ std::vector<GameObject *> GameObject::Move(enum Direction direction,
 
         // Collision only if on both axes
         bool collision = collisionX && collisionY;
-        if (collision) {
+        if (collision && !hittable.IsSolid) {
             hits.push_back(&hittable);
+            commitMove = false;
         }
-        commitMove = commitMove && !(collision && hittable.IsSolid);
     }
     if (!commitMove) {
         this->Position = oldPosition;
@@ -102,6 +102,10 @@ std::vector<GameObject *> GameObject::Move(enum Direction direction,
 
 // Renders the object
 void GameObject::Render() {
+    if (!IsVisible) {
+        return;
+    }
+
     // Get shader
     Shader shader = ResourceManager::GetShader("object").Use();
 

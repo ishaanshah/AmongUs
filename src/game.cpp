@@ -31,14 +31,25 @@ void Game::Init() {
 
     // Generate maze
     // TODO: Unique duplicate walls
-    std::vector<GameObject> walls = maze.GenerateMaze();
-    this->Objects.insert(this->Objects.begin(), walls.begin(), walls.end());
+    this->Walls = maze.GenerateMaze();
+
+    const float cellSizeX = (float)WIDTH / NCOLS;
+    const float cellSizeY = (float)HEIGHT / NROWS;
 
     // Create player
     this->Player = new Character(glm::vec2(CHARACTER_SIZE / 2, CHARACTER_SIZE),
                                  glm::vec2(1.0f, 1.0f),
-                                 Character::generateVerts(COLOR_YELLOW),
+                                 Character::GenerateVerts(COLOR_YELLOW),
                                  COLOR_YELLOW);
+
+    // Create imposter
+    int cellX = (3*NCOLS / 4) + rand() % (NCOLS / 4);
+    int cellY = (3*NROWS / 4) + rand() % (NROWS / 4);
+    glm::vec2 impPosition = glm::vec2(cellX*cellSizeX + CHARACTER_SIZE / 2.0f,
+                                      cellY*cellSizeY + CHARACTER_SIZE);
+    this->Imposter = new Character(impPosition, glm::vec2(1.0f, 1.0f),
+                                   Character::GenerateVerts(COLOR_RED),
+                                   COLOR_RED);
 }
 
 void Game::Update(float dt) {
@@ -49,23 +60,24 @@ void Game::ProcessInput(float dt) {
     if (this->State == GAME_ACTIVE) {
         float velocity = CHARACTER_VELOCITY * dt;
         if (this->Keys[GLFW_KEY_D]) {
-            this->Player->Move(RIGHT, this->Objects, velocity);
+            this->Player->Move(RIGHT, this->Walls, velocity);
         }
         if (this->Keys[GLFW_KEY_A]) {
-            this->Player->Move(LEFT, this->Objects, velocity);
+            this->Player->Move(LEFT, this->Walls, velocity);
         }
         if (this->Keys[GLFW_KEY_W]) {
-            this->Player->Move(UP, this->Objects, velocity);
+            this->Player->Move(UP, this->Walls, velocity);
         }
         if (this->Keys[GLFW_KEY_S]) {
-            this->Player->Move(DOWN, this->Objects, velocity);
+            this->Player->Move(DOWN, this->Walls, velocity);
         }
     }
 }
 
 void Game::Render() {
-    for (auto object: this->Objects) {
+    for (auto object: this->Walls) {
         object.Render();
     }
     this->Player->Render();
+    this->Imposter->Render();
 }

@@ -6,7 +6,6 @@
 #include <glad/glad.h>
 
 #include <glm/glm.hpp>
-#include "glm/fwd.hpp"
 
 #include "utils/shader.hpp"
 
@@ -19,7 +18,7 @@ enum Direction {
 
 class GameObject {
     public:
-        bool IsSolid;
+        bool IsSolid, IsVisible;
         glm::vec2 Position, Direction;
 
         // Constructor

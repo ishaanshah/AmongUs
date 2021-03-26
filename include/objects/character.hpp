@@ -14,7 +14,7 @@ class Character : public GameObject {
         Character(glm::vec2 Position, glm::vec2 Direction,
                   std::vector<float> Vertices, glm::vec3 Color);
 
-        static std::vector<float> generateVerts(glm::vec3 Color); 
+        static std::vector<float> GenerateVerts(glm::vec3 Color); 
 };
 
 #endif

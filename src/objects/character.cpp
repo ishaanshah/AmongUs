@@ -7,7 +7,7 @@ Character::Character(glm::vec2 Position, glm::vec2 Direction,
                      std::vector<float> Vertices, glm::vec3 Color) :
                      GameObject(Position, Direction, Vertices, true), Color(Color) {  }
 
-std::vector<float> Character::generateVerts(glm::vec3 Color) {
+std::vector<float> Character::GenerateVerts(glm::vec3 Color) {
     std::vector<float> character {
         0.0f, 0.0f, Color.r, Color.g, Color.b,
         CHARACTER_SIZE, 0.0f, Color.r, Color.g, Color.b,
