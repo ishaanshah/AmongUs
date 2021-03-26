@@ -15,7 +15,8 @@ set(SOURCES ${SRC_DIR}/main.cpp
             ${SRC_DIR}/maze/cell.cpp
             ${SRC_DIR}/objects/character.cpp
             ${SRC_DIR}/utils/resource_manager.cpp
-            ${SRC_DIR}/utils/shader.cpp)
+            ${SRC_DIR}/utils/shader.cpp
+            ${SRC_DIR}/utils/text_renderer.cpp)
 
 # Executable definition and properties
 add_executable(${PROJECT_NAME} ${SOURCES})
@@ -45,3 +46,8 @@ target_link_libraries(${PROJECT_NAME} "glad" "${CMAKE_DL_LIBS}")
 # GLM
 add_subdirectory(${LIB_DIR}/glm)
 target_link_libraries(${PROJECT_NAME} glm::glm)
+
+# FreeType
+find_package(Freetype REQUIRED)
+target_link_libraries(${PROJECT_NAME} ${FREETYPE_LIBRARIES})
+target_include_directories(${PROJECT_NAME} PRIVATE ${FREETYPE_INCLUDE_DIRS})

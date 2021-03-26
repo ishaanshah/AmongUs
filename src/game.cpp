@@ -1,6 +1,8 @@
 /* Source for class which stores all the information about the game */
 
 #include <GLFW/glfw3.h>
+#include <string>
+#include <sstream>
 
 #include "constants.hpp"
 #include "game.hpp"
@@ -8,12 +10,19 @@
 #include "maze/maze.hpp"
 #include "objects/character.hpp"
 #include "utils/resource_manager.hpp"
+#include "utils/text_renderer.hpp"
 
 Game::Game(unsigned int width, unsigned int height) :
            State(GAME_ACTIVE), Keys(), Width(width), Height(height),
            Score(0), Health(100), Time(TIME_LIMIT) {  }
 
 void Game::Init() {
+    // Initialize text render
+    this->Text = new TextRenderer(this->Width, this->Height);
+
+    // Load glyphs
+    this->Text->Load("../fonts/myosevka.ttf", FONT_SIZE);
+
     // Load the object shader program
     ResourceManager::LoadShader("../shaders/object.vert",
                                 "../shaders/object.frag",
@@ -91,4 +100,20 @@ void Game::Render() {
     }
     this->Player->Render();
     this->Imposter->Render();
+
+
+    // Print time
+    std::ostringstream buffer;
+    buffer << "Time left: " << (int)this->Time;
+    this->Text->RenderText(buffer.str(), 5.0f, 5.0f, 1.0f, COLOR_WHITE);
+
+    // Print score
+    buffer.str("");
+    buffer << "Score: " << this->Score;
+    this->Text->RenderText(buffer.str(), 5.0f, 5 + FONT_SIZE+5, 1.0f, COLOR_WHITE);
+
+    // Print healt
+    buffer.str("");
+    buffer << "Health: " << this->Health;
+    this->Text->RenderText(buffer.str(), 5.0f, 5 + 2*(FONT_SIZE+5), 1.0f, COLOR_WHITE);
 }

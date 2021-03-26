@@ -9,6 +9,8 @@
 #define NCOLS 16
 #define NROWS 9
 
+#define FONT_SIZE 20
+
 // Dimension of cell
 #define WALL_SIZE 6
 
