@@ -16,7 +16,7 @@ class Character : public GameObject {
 
         static std::vector<float> GenerateVerts(glm::vec3 Color); 
 
-        void Hit(int &score, int &health);
+        void Hit(int &score, int &health, const bool lights);
 };
 
 #endif

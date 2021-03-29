@@ -26,7 +26,8 @@ class Game {
         bool Keys[1024];
         float Time;
         int Score, Health;
-        std::vector<GameObject> Walls;
+        std::vector<GameObject> Walls; // TODO: Change to pointer to object
+        std::vector<GameObject *> Coins, Bombs;
         unsigned int Width, Height;
 
         Game(unsigned int width, unsigned int height);

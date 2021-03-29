@@ -4,9 +4,10 @@
 #include "utils/resource_manager.hpp"
 
 GameObject::GameObject(glm::vec2 Position, glm::vec2 Direction,
-                       std::vector<float> Vertices, bool IsSolid) : 
+                       std::vector<float> Vertices, bool IsSolid,
+                       bool IsVisible) :
                        Position(Position), Direction(Direction),
-                       Vertices(Vertices), IsSolid(IsSolid), IsVisible(true) {
+                       Vertices(Vertices), IsSolid(IsSolid), IsVisible(IsVisible) {
     // Configure VAO/VBO
     unsigned int VBO;
 
@@ -88,10 +89,12 @@ std::vector<GameObject *> GameObject::Move(enum Direction direction,
 
         // Collision only if on both axes
         bool collision = collisionX && collisionY;
-        if (collision && !hittable->IsSolid) {
+        if (collision && !hittable->IsSolid && hittable->IsVisible) {
             hits.push_back(hittable);
         }
-        commitMove = commitMove && !(collision && hittable->IsSolid);
+        commitMove = commitMove && !(collision &&
+                                     hittable->IsSolid &&
+                                     hittable->IsVisible);
     }
     if (!commitMove) {
         this->Position = oldPosition;

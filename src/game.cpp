@@ -1,6 +1,8 @@
 /* Source for class which stores all the information about the game */
 
 #include <GLFW/glfw3.h>
+#include <algorithm>
+#include <iostream> // TODO: remove this later
 #include <string>
 #include <sstream>
 
@@ -9,6 +11,7 @@
 #include "game_object.hpp"
 #include "maze/maze.hpp"
 #include "objects/character.hpp"
+#include "objects/coin.hpp"
 #include "utils/resource_manager.hpp"
 #include "utils/text_renderer.hpp"
 
@@ -49,8 +52,8 @@ void Game::Init() {
     // Create player
     this->Player = new Character(glm::vec2(CHARACTER_SIZE / 2, CHARACTER_SIZE),
                                  glm::vec2(1.0f, 1.0f),
-                                 Character::GenerateVerts(COLOR_YELLOW),
-                                 COLOR_YELLOW);
+                                 Character::GenerateVerts(COLOR_PURPLE),
+                                 COLOR_PURPLE);
 
     // Create imposter
     int cellX = (3*NCOLS / 4) + rand() % (NCOLS / 4);
@@ -60,6 +63,23 @@ void Game::Init() {
     this->Imposter = new Character(impPosition, glm::vec2(1.0f, 1.0f),
                                    Character::GenerateVerts(COLOR_RED),
                                    COLOR_RED);
+
+    // Create coins
+    for (int i = 0; i < NROWS; i++) {
+        std::vector<int> done;
+        int cellY = i;
+        for (int j = 0; j < NCOLS / 6; j++) {
+            int cellX = rand() % NCOLS;
+            if (std::find(done.begin(), done.end(), cellX) == done.end()) {
+                glm::vec2 position = glm::vec2(cellX*cellSizeX + cellSizeX / 2,
+                                               cellY*cellSizeY + cellSizeY / 2);
+                this->Coins.push_back(new Coin(position, glm::vec2(1.0f, 1.0f),
+                                           Coin::GenerateVerts()));
+            }
+            done.push_back(cellX);
+        }
+        done.clear();
+    }
 }
 
 void Game::Update(float dt, GLFWwindow *window) {
@@ -67,6 +87,12 @@ void Game::Update(float dt, GLFWwindow *window) {
     std::vector<GameObject *> hittables;
     for (int i = 0; i < this->Walls.size(); i++) {
         hittables.push_back(&this->Walls[i]);
+    }
+    for (int i = 0; i < this->Coins.size(); i++) {
+        hittables.push_back(this->Coins[i]);
+    }
+    for (int i = 0; i < this->Bombs.size(); i++) {
+        hittables.push_back(this->Bombs[i]);
     }
     hittables.push_back(this->Imposter);
 
@@ -98,7 +124,7 @@ void Game::Update(float dt, GLFWwindow *window) {
 
     // Process hits
     for (int i = 0; i < hitList.size(); i++) {
-        hitList[i]->Hit(this->Score, this->Health);
+        hitList[i]->Hit(this->Score, this->Health, false);
     }
 
     // TODO: Check collision stuff here ig
@@ -118,6 +144,12 @@ void Game::Update(float dt, GLFWwindow *window) {
 void Game::Render() {
     for (auto wall: this->Walls) {
         wall.Render();
+    }
+    for (auto coin: this->Coins) {
+        coin->Render();
+    }
+    for (auto bomb: this->Bombs) {
+        bomb->Render();
     }
     this->Player->Render();
     this->Imposter->Render();

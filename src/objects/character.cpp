@@ -1,7 +1,5 @@
 #include "constants.hpp"
 #include "objects/character.hpp"
-#include <iostream>
-#include "../lib/prettyprint.hpp"
 
 Character::Character(glm::vec2 Position, glm::vec2 Direction,
                      std::vector<float> Vertices, glm::vec3 Color) :
@@ -49,6 +47,6 @@ std::vector<float> Character::GenerateVerts(glm::vec3 Color) {
     return character;
 }
 
-void Character::Hit(int &score, int &health) {
+void Character::Hit(int &score, int &health, const bool lights) {
     health = 0;
 }

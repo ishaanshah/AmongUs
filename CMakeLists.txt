@@ -14,6 +14,7 @@ set(SOURCES ${SRC_DIR}/main.cpp
             ${SRC_DIR}/maze/maze.cpp
             ${SRC_DIR}/maze/cell.cpp
             ${SRC_DIR}/objects/character.cpp
+            ${SRC_DIR}/objects/coin.cpp
             ${SRC_DIR}/utils/resource_manager.cpp
             ${SRC_DIR}/utils/shader.cpp
             ${SRC_DIR}/utils/text_renderer.cpp)

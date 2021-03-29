@@ -23,7 +23,8 @@ class GameObject {
 
         // Constructor
         GameObject(glm::vec2 Position, glm::vec2 Direction,
-                   std::vector<float> Vertices, bool IsSolid);
+                   std::vector<float> Vertices, bool IsSolid,
+                   bool IsVisible = true);
 
         // Gets bounding box of the object
         std::pair<glm::vec2, glm::vec2> GetBoundBox();
@@ -39,7 +40,7 @@ class GameObject {
         glm::mat4 GetModelMatrix();
 
         // Implementation to be done by child classes
-        virtual void Hit(int &score, int &health) {  };
+        virtual void Hit(int &score, int &health, const bool lights) {  };
     private:
         unsigned int VAO;
         std::vector<float> Vertices;

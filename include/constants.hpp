@@ -18,6 +18,9 @@
 #define CHARACTER_SIZE 54
 #define CHARACTER_VELOCITY 150
 
+// Dimensions of coin
+#define COIN_SIZE 40
+
 // Circle resolution
 #define CIRCLE_RES 20
 
@@ -31,7 +34,9 @@
 #define COLOR_BLUE glm::vec3(0.0f, 0.0f, 1.0f)
 #define COLOR_CYAN glm::vec3(0.0f, 1.0f, 1.0f)
 #define COLOR_YELLOW glm::vec3(1.0f, 1.0f, 0.0f)
+#define COLOR_PURPLE glm::vec3(0.5f, 0.0f, 0.5f)
 #define COLOR_BLACK glm::vec3(0.0f, 0.0f, 0.0f)
+#define COLOR_GREY glm::vec3(0.4f, 0.4f, 0.4f)
 #define COLOR_WHITE glm::vec3(1.0f, 1.0f, 1.0f)
 
 #endif
