@@ -63,21 +63,42 @@ void Game::Init() {
 }
 
 void Game::Update(float dt, GLFWwindow *window) {
+    // Create hittable object list
+    std::vector<GameObject *> hittables;
+    for (int i = 0; i < this->Walls.size(); i++) {
+        hittables.push_back(&this->Walls[i]);
+    }
+    hittables.push_back(this->Imposter);
+
     // Process input
+    std::vector<GameObject *> hitList;
     if (this->State == GAME_ACTIVE) {
         float velocity = CHARACTER_VELOCITY * dt;
+        std::vector<GameObject *> temp;
         if (this->Keys[GLFW_KEY_D]) {
-            this->Player->Move(RIGHT, this->Walls, velocity);
+            temp = this->Player->Move(RIGHT, hittables, velocity);
+            hitList.insert(hitList.end(), temp.begin(), temp.end());
         }
         if (this->Keys[GLFW_KEY_A]) {
-            this->Player->Move(LEFT, this->Walls, velocity);
+            temp.clear();
+            hitList = this->Player->Move(LEFT, hittables, velocity);
+            hitList.insert(hitList.end(), temp.begin(), temp.end());
         }
         if (this->Keys[GLFW_KEY_W]) {
-            this->Player->Move(UP, this->Walls, velocity);
+            temp.clear();
+            hitList = this->Player->Move(UP, hittables, velocity);
+            hitList.insert(hitList.end(), temp.begin(), temp.end());
         }
         if (this->Keys[GLFW_KEY_S]) {
-            this->Player->Move(DOWN, this->Walls, velocity);
+            temp.clear();
+            hitList = this->Player->Move(DOWN, hittables, velocity);
+            hitList.insert(hitList.end(), temp.begin(), temp.end());
         }
+    }
+
+    // Process hits
+    for (int i = 0; i < hitList.size(); i++) {
+        hitList[i]->Hit(this->Score, this->Health);
     }
 
     // TODO: Check collision stuff here ig
@@ -95,8 +116,8 @@ void Game::Update(float dt, GLFWwindow *window) {
 }
 
 void Game::Render() {
-    for (auto object: this->Walls) {
-        object.Render();
+    for (auto wall: this->Walls) {
+        wall.Render();
     }
     this->Player->Render();
     this->Imposter->Render();
@@ -112,7 +133,7 @@ void Game::Render() {
     buffer << "Score: " << this->Score;
     this->Text->RenderText(buffer.str(), 5.0f, 5 + FONT_SIZE+5, 1.0f, COLOR_WHITE);
 
-    // Print healt
+    // Print health
     buffer.str("");
     buffer << "Health: " << this->Health;
     this->Text->RenderText(buffer.str(), 5.0f, 5 + 2*(FONT_SIZE+5), 1.0f, COLOR_WHITE);

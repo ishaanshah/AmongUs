@@ -22,9 +22,9 @@ std::vector<GameObject> Maze::GenerateMaze() {
     // TODO: Randomly remove some walls to create cycles
     for (auto &row : this->Cells) {
         for (auto &cell : row) {
-            if (rand() % 100 < 35) {
+            if (rand() % 100 < 50) {
                 for (auto wall : cell.Walls) {
-                    if (wall && rand() % 100 < 70) {
+                    if (wall && rand() % 100 < 80) {
                         wall = false;
                     }
                 }

@@ -1,4 +1,4 @@
-#include <glm/fwd.hpp>
+#include <glm/glm.hpp>
 
 #include "game_object.hpp"
 #include "utils/resource_manager.hpp"
@@ -54,8 +54,8 @@ std::pair<glm::vec2, glm::vec2> GameObject::GetBoundBox() {
 }
 
 std::vector<GameObject *> GameObject::Move(enum Direction direction,
-                                         const std::vector<GameObject> &hittables,
-                                         float velocity) {
+                                           const std::vector<GameObject *> &hittables,
+                                           float velocity) {
     std::vector<GameObject *> hits;
 
     glm::vec2 oldPosition(this->Position);
@@ -76,7 +76,7 @@ std::vector<GameObject *> GameObject::Move(enum Direction direction,
     bool commitMove = true;
     std::pair<glm::vec2, glm::vec2> selfBox = GetBoundBox();
     for (auto hittable: hittables) {
-        std::pair<glm::vec2, glm::vec2> hittableBox = hittable.GetBoundBox();
+        std::pair<glm::vec2, glm::vec2> hittableBox = hittable->GetBoundBox();
 
         // Collision along X-Axis
         bool collisionX = (hittableBox.first.x + hittableBox.second.x >= selfBox.first.x && 
@@ -88,10 +88,10 @@ std::vector<GameObject *> GameObject::Move(enum Direction direction,
 
         // Collision only if on both axes
         bool collision = collisionX && collisionY;
-        if (collision && !hittable.IsSolid) {
-            hits.push_back(&hittable);
+        if (collision && !hittable->IsSolid) {
+            hits.push_back(hittable);
         }
-        commitMove = commitMove && !(collision && hittable.IsSolid);
+        commitMove = commitMove && !(collision && hittable->IsSolid);
     }
     if (!commitMove) {
         this->Position = oldPosition;

@@ -30,12 +30,16 @@ class GameObject {
 
         // Move the object, returns a list of objects which have been hit
         std::vector<GameObject *> Move(enum Direction direction,
-                                     const std::vector<GameObject> &hittables,
-                                     float velocity);
+                                       const std::vector<GameObject *> &hittables,
+                                       float velocity);
 
         // Render the object
         void Render();
+
         glm::mat4 GetModelMatrix();
+
+        // Implementation to be done by child classes
+        virtual void Hit(int &score, int &health) {  };
     private:
         unsigned int VAO;
         std::vector<float> Vertices;

@@ -48,3 +48,7 @@ std::vector<float> Character::GenerateVerts(glm::vec3 Color) {
 
     return character;
 }
+
+void Character::Hit(int &score, int &health) {
+    health = 0;
+}
