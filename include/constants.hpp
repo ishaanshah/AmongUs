@@ -21,6 +21,9 @@
 // Dimensions of coin
 #define COIN_SIZE 40
 
+// Dimensions of bomb
+#define BOMB_SIZE 40
+
 // Circle resolution
 #define CIRCLE_RES 20
 

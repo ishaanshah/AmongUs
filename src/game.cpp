@@ -10,6 +10,7 @@
 #include "game.hpp"
 #include "game_object.hpp"
 #include "maze/maze.hpp"
+#include "objects/bomb.hpp"
 #include "objects/character.hpp"
 #include "objects/coin.hpp"
 #include "utils/resource_manager.hpp"
@@ -64,7 +65,7 @@ void Game::Init() {
                                    Character::GenerateVerts(COLOR_RED),
                                    COLOR_RED);
 
-    // Create coins
+    // Create coins and bombs
     for (int i = 0; i < NROWS; i++) {
         std::vector<int> done;
         int cellY = i;
@@ -73,8 +74,14 @@ void Game::Init() {
             if (std::find(done.begin(), done.end(), cellX) == done.end()) {
                 glm::vec2 position = glm::vec2(cellX*cellSizeX + cellSizeX / 2,
                                                cellY*cellSizeY + cellSizeY / 2);
-                this->Coins.push_back(new Coin(position, glm::vec2(1.0f, 1.0f),
-                                           Coin::GenerateVerts()));
+                int coin = rand() % 2;
+                if (coin) {
+                    this->Coins.push_back(new Coin(position, glm::vec2(1.0f, 1.0f),
+                                                   Coin::GenerateVerts()));
+                } else {
+                    this->Bombs.push_back(new Bomb(position, glm::vec2(1.0f, 1.0f),
+                                                   Bomb::GenerateVerts()));
+                }
             }
             done.push_back(cellX);
         }
