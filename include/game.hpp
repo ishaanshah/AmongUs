@@ -8,29 +8,24 @@
 #include "game_object.hpp"
 #include "objects/character.hpp"
 #include "objects/tasks.hpp"
+#include "maze/maze.hpp"
 #include "utils/shader.hpp"
 #include "utils/text_renderer.hpp"
-
-// Current state of the game
-enum GameState  {
-    GAME_ACTIVE,
-    GAME_MENU,
-    GAME_PAUSED
-};
 
 // Class to store information about the current game
 class Game {
     public:
         Character *Player, *Imposter;
+        Maze *MyMaze;
         TaskPowerups *TaskP;
         TaskVaporise *TaskV;
-        GameState State;
         TextRenderer *Text;
+        Direction ImposterDirection;
         bool Keys[1024], LightsOn;
         float Time;
         int Score, Health, Tasks;
-        std::vector<GameObject> Walls; // TODO: Change to pointer to object
         std::vector<GameObject *> Coins, Bombs;
+        std::vector<GameObject> Walls; // TODO: Change to pointer to object
         unsigned int Width, Height;
 
         Game(unsigned int width, unsigned int height);

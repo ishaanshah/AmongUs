@@ -18,8 +18,8 @@
 #include "utils/text_renderer.hpp"
 
 Game::Game(unsigned int width, unsigned int height) :
-           State(GAME_ACTIVE), Keys(), Width(width), Height(height), Tasks(2),
-           Score(0), Health(100), Time(TIME_LIMIT), LightsOn(true) {  }
+           Keys(), Width(width), Height(height), Tasks(2), Score(0),
+           Health(100), Time(TIME_LIMIT), LightsOn(true), ImposterDirection(STAY) {  }
 
 void Game::Init() {
     // Initialize text render
@@ -42,11 +42,11 @@ void Game::Init() {
     ResourceManager::GetShader("object").Use().SetMatrix4("projection", projection);
 
     // Create maze object
-    Maze maze = Maze();
+    this->MyMaze = new Maze();
 
     // Generate maze
     // TODO: Unique duplicate walls
-    this->Walls = maze.GenerateMaze();
+    this->Walls = this->MyMaze->GenerateMaze();
 
     const float cellSizeX = (float)WIDTH / NCOLS;
     const float cellSizeY = (float)HEIGHT / NROWS;
@@ -116,37 +116,37 @@ void Game::Update(float dt, GLFWwindow *window) {
     for (int i = 0; i < this->Coins.size(); i++) {
         hittables.push_back(this->Coins[i]);
     }
-    for (int i = 0; i < this->Bombs.size(); i++) {
-        hittables.push_back(this->Bombs[i]);
-    }
+    hittables.insert(hittables.end(), this->Coins.begin(), this->Coins.end());
+    hittables.insert(hittables.end(), this->Bombs.begin(), this->Bombs.end());
     hittables.push_back(this->Imposter);
     hittables.push_back(this->TaskP);
     hittables.push_back(this->TaskV);
 
     // Process input
     std::vector<GameObject *> hitList;
-    if (this->State == GAME_ACTIVE) {
-        float velocity = CHARACTER_VELOCITY * dt;
-        std::vector<GameObject *> temp;
-        if (this->Keys[GLFW_KEY_D]) {
-            temp = this->Player->Move(RIGHT, hittables, velocity);
-            hitList.insert(hitList.end(), temp.begin(), temp.end());
-        }
-        if (this->Keys[GLFW_KEY_A]) {
-            temp.clear();
-            hitList = this->Player->Move(LEFT, hittables, velocity);
-            hitList.insert(hitList.end(), temp.begin(), temp.end());
-        }
-        if (this->Keys[GLFW_KEY_W]) {
-            temp.clear();
-            hitList = this->Player->Move(UP, hittables, velocity);
-            hitList.insert(hitList.end(), temp.begin(), temp.end());
-        }
-        if (this->Keys[GLFW_KEY_S]) {
-            temp.clear();
-            hitList = this->Player->Move(DOWN, hittables, velocity);
-            hitList.insert(hitList.end(), temp.begin(), temp.end());
-        }
+    float velocity = CHARACTER_VELOCITY * dt;
+    std::vector<GameObject *> temp = this->Player->Move(STAY, hittables, velocity);
+    hitList.insert(hitList.end(), temp.begin(), temp.end());
+
+    if (this->Keys[GLFW_KEY_D]) {
+        temp.clear();
+        temp = this->Player->Move(RIGHT, hittables, velocity);
+        hitList.insert(hitList.end(), temp.begin(), temp.end());
+    }
+    if (this->Keys[GLFW_KEY_A]) {
+        temp.clear();
+        hitList = this->Player->Move(LEFT, hittables, velocity);
+        hitList.insert(hitList.end(), temp.begin(), temp.end());
+    }
+    if (this->Keys[GLFW_KEY_W]) {
+        temp.clear();
+        hitList = this->Player->Move(UP, hittables, velocity);
+        hitList.insert(hitList.end(), temp.begin(), temp.end());
+    }
+    if (this->Keys[GLFW_KEY_S]) {
+        temp.clear();
+        hitList = this->Player->Move(DOWN, hittables, velocity);
+        hitList.insert(hitList.end(), temp.begin(), temp.end());
     }
 
     // Process hits
@@ -155,7 +155,22 @@ void Game::Update(float dt, GLFWwindow *window) {
                         this->Imposter, this->Coins, this->Bombs);
     }
 
-    // TODO: Check collision stuff here ig
+    // Move the imposter
+    Direction imposterMove = this->MyMaze->GetNextMove(this->Player, this->Imposter);
+    // TODO: Remove this once wall thing has been fixed
+    hittables.clear();
+    for (int i = 0; i < this->Walls.size(); i++) {
+        hittables.push_back(&this->Walls[i]);
+    }
+    // std::cout << imposterMove << "\n";
+    if (imposterMove == CONT) {
+        imposterMove = this->ImposterDirection;
+    } else {
+        this->ImposterDirection = imposterMove;
+    }
+    this->Imposter->Move(imposterMove, hittables, CHARACTER_VELOCITY * dt);
+    // sleep(1);
+
     // Update time
     this->Time -= dt;
     if (this->Time <= 0.0f) {
