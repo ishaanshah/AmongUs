@@ -177,6 +177,12 @@ void Game::Update(float dt, GLFWwindow *window) {
         this->Imposter->Move(imposterMove, hittables, CHARACTER_VELOCITY * dt);
     }
 
+    // Set light position
+    ResourceManager::GetShader("object").Use()
+        .SetVector2f("lightPos", this->Player->Position);
+    ResourceManager::GetShader("object").Use()
+        .SetInteger("lightsOn", this->LightsOn);
+
     // Update time
     this->Time -= dt;
     if (this->Time <= 0.0f) {
