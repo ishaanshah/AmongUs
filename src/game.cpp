@@ -148,6 +148,11 @@ void Game::Update(float dt, GLFWwindow *window) {
         hitList = this->Player->Move(DOWN, hittables, velocity);
         hitList.insert(hitList.end(), temp.begin(), temp.end());
     }
+    if (this->Keys[GLFW_KEY_SPACE]) {
+        this->LightsOn = false;
+    } else {
+        this->LightsOn = true;
+    }
 
     // Process hits
     for (int i = 0; i < hitList.size(); i++) {
@@ -155,21 +160,22 @@ void Game::Update(float dt, GLFWwindow *window) {
                         this->Imposter, this->Coins, this->Bombs);
     }
 
-    // Move the imposter
-    Direction imposterMove = this->MyMaze->GetNextMove(this->Player, this->Imposter);
-    // TODO: Remove this once wall thing has been fixed
-    hittables.clear();
-    for (int i = 0; i < this->Walls.size(); i++) {
-        hittables.push_back(&this->Walls[i]);
+    if (this->Imposter->IsVisible) {
+        // Move the imposter
+        Direction imposterMove = this->MyMaze->GetNextMove(this->Player, this->Imposter);
+        // TODO: Remove this once wall thing has been fixed
+        hittables.clear();
+        for (int i = 0; i < this->Walls.size(); i++) {
+            hittables.push_back(&this->Walls[i]);
+        }
+        // std::cout << imposterMove << "\n";
+        if (imposterMove == CONT) {
+            imposterMove = this->ImposterDirection;
+        } else {
+            this->ImposterDirection = imposterMove;
+        }
+        this->Imposter->Move(imposterMove, hittables, CHARACTER_VELOCITY * dt);
     }
-    // std::cout << imposterMove << "\n";
-    if (imposterMove == CONT) {
-        imposterMove = this->ImposterDirection;
-    } else {
-        this->ImposterDirection = imposterMove;
-    }
-    this->Imposter->Move(imposterMove, hittables, CHARACTER_VELOCITY * dt);
-    // sleep(1);
 
     // Update time
     this->Time -= dt;
@@ -180,6 +186,12 @@ void Game::Update(float dt, GLFWwindow *window) {
 
     // Check if player health is enough
     if (this->Health <= 0) {
+        glfwSetWindowShouldClose(window, true);
+    }
+
+    // Check if player reached exit and tasks are complete
+    if (this->Tasks == 0 && (this->Player->Position.x > WIDTH ||
+                             this->Player->Position.y > Height)) {
         glfwSetWindowShouldClose(window, true);
     }
 }
