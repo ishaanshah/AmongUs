@@ -13,12 +13,13 @@
 #include "objects/bomb.hpp"
 #include "objects/character.hpp"
 #include "objects/coin.hpp"
+#include "objects/tasks.hpp"
 #include "utils/resource_manager.hpp"
 #include "utils/text_renderer.hpp"
 
 Game::Game(unsigned int width, unsigned int height) :
-           State(GAME_ACTIVE), Keys(), Width(width), Height(height),
-           Score(0), Health(100), Time(TIME_LIMIT) {  }
+           State(GAME_ACTIVE), Keys(), Width(width), Height(height), Tasks(2),
+           Score(0), Health(100), Time(TIME_LIMIT), LightsOn(true) {  }
 
 void Game::Init() {
     // Initialize text render
@@ -87,6 +88,23 @@ void Game::Init() {
         }
         done.clear();
     }
+
+    // Create powerups
+    cellX = NCOLS - 1;
+    cellY = 0;
+    this->TaskP = new TaskPowerups(glm::vec2(cellX*cellSizeX + cellSizeX / 2,
+                                             cellY*cellSizeY + cellSizeY / 2),
+                                   glm::vec2(1.0f, 1.0f),
+                                   Task::GenerateVerts(COLOR_ORANGE),
+                                   COLOR_ORANGE);
+
+    cellX = 0;
+    cellY = NROWS - 1;
+    this->TaskV = new TaskVaporise(glm::vec2(cellX*cellSizeX + cellSizeX / 2,
+                                             cellY*cellSizeY + cellSizeY / 2),
+                                   glm::vec2(1.0f, 1.0f),
+                                   Task::GenerateVerts(COLOR_ORANGE),
+                                   COLOR_ORANGE);
 }
 
 void Game::Update(float dt, GLFWwindow *window) {
@@ -102,6 +120,8 @@ void Game::Update(float dt, GLFWwindow *window) {
         hittables.push_back(this->Bombs[i]);
     }
     hittables.push_back(this->Imposter);
+    hittables.push_back(this->TaskP);
+    hittables.push_back(this->TaskV);
 
     // Process input
     std::vector<GameObject *> hitList;
@@ -131,7 +151,8 @@ void Game::Update(float dt, GLFWwindow *window) {
 
     // Process hits
     for (int i = 0; i < hitList.size(); i++) {
-        hitList[i]->Hit(this->Score, this->Health, false);
+        hitList[i]->Hit(this->Score, this->Health, this->Tasks, this->LightsOn,
+                        this->Imposter, this->Coins, this->Bombs);
     }
 
     // TODO: Check collision stuff here ig
@@ -160,6 +181,8 @@ void Game::Render() {
     }
     this->Player->Render();
     this->Imposter->Render();
+    this->TaskP->Render();
+    this->TaskV->Render();
 
 
     // Print time
@@ -176,4 +199,14 @@ void Game::Render() {
     buffer.str("");
     buffer << "Health: " << this->Health;
     this->Text->RenderText(buffer.str(), 5.0f, 5 + 2*(FONT_SIZE+5), 1.0f, COLOR_WHITE);
+
+    // Print light status
+    buffer.str("");
+    buffer << "Lights: " << (this->LightsOn ? "On" : "Off");
+    this->Text->RenderText(buffer.str(), 5.0f, 5 + 3*(FONT_SIZE+5), 1.0f, COLOR_WHITE);
+
+    // Print remaining tasks
+    buffer.str("");
+    buffer << "Tasks: " << this->Tasks << "/2";
+    this->Text->RenderText(buffer.str(), 5.0f, 5 + 4*(FONT_SIZE+5), 1.0f, COLOR_WHITE);
 }

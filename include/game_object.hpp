@@ -40,7 +40,9 @@ class GameObject {
         glm::mat4 GetModelMatrix();
 
         // Implementation to be done by child classes
-        virtual void Hit(int &score, int &health, const bool lights) {  };
+        virtual void Hit(int &score, int &health, int &tasks, const bool lights,
+                         GameObject *Imposter, std::vector<GameObject *> &coins,
+                         std::vector<GameObject *> &bombs) {  };
     private:
         unsigned int VAO;
         std::vector<float> Vertices;

@@ -16,7 +16,10 @@ class Bomb : public GameObject {
 
         static std::vector<float> GenerateVerts(); 
 
-        void Hit(int &score, int &health, const bool lights);
+        void Hit(int &score, int &health, int &tasks, const bool lights,
+                 GameObject *Imposter, std::vector<GameObject *> &coins,
+                 std::vector<GameObject *> &bombs);
+
 };
 
 #endif

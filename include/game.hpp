@@ -7,6 +7,7 @@
 
 #include "game_object.hpp"
 #include "objects/character.hpp"
+#include "objects/tasks.hpp"
 #include "utils/shader.hpp"
 #include "utils/text_renderer.hpp"
 
@@ -21,11 +22,13 @@ enum GameState  {
 class Game {
     public:
         Character *Player, *Imposter;
+        TaskPowerups *TaskP;
+        TaskVaporise *TaskV;
         GameState State;
         TextRenderer *Text;
-        bool Keys[1024];
+        bool Keys[1024], LightsOn;
         float Time;
-        int Score, Health;
+        int Score, Health, Tasks;
         std::vector<GameObject> Walls; // TODO: Change to pointer to object
         std::vector<GameObject *> Coins, Bombs;
         unsigned int Width, Height;

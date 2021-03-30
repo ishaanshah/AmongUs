@@ -47,6 +47,8 @@ std::vector<float> Character::GenerateVerts(glm::vec3 Color) {
     return character;
 }
 
-void Character::Hit(int &score, int &health, const bool lights) {
+void Character::Hit(int &score, int &health, int &tasks, const bool lights,
+                    GameObject *Imposter, std::vector<GameObject *> &coins,
+                    std::vector<GameObject *> &bombs) {
     health = 0;
 }

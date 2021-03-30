@@ -3,7 +3,7 @@
 
 Bomb::Bomb(glm::vec2 Position, glm::vec2 Direction,
                      std::vector<float> Vertices) :
-                     GameObject(Position, Direction, Vertices, false),
+                     GameObject(Position, Direction, Vertices, false, false),
                      Color(COLOR_GREY) {  }
 
 std::vector<float> Bomb::GenerateVerts() {
@@ -28,7 +28,9 @@ std::vector<float> Bomb::GenerateVerts() {
     return bomb;
 }
 
-void Bomb::Hit(int &score, int &health, const bool lights) {
+void Bomb::Hit(int &score, int &health, int &tasks, const bool lights,
+               GameObject *Imposter, std::vector<GameObject *> &coins,
+               std::vector<GameObject *> &bombs) {
     health -= 10;
     this->IsVisible = false;
 }

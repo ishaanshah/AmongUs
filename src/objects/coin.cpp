@@ -3,7 +3,7 @@
 
 Coin::Coin(glm::vec2 Position, glm::vec2 Direction,
                      std::vector<float> Vertices) :
-                     GameObject(Position, Direction, Vertices, false),
+                     GameObject(Position, Direction, Vertices, false, false),
                      Color(COLOR_YELLOW) {  }
 
 std::vector<float> Coin::GenerateVerts() {
@@ -28,7 +28,9 @@ std::vector<float> Coin::GenerateVerts() {
     return coin;
 }
 
-void Coin::Hit(int &score, int &health, const bool lights) {
-    score += lights ? 20 : 10;
+void Coin::Hit(int &score, int &health, int &tasks, const bool lights,
+               GameObject *Imposter, std::vector<GameObject *> &coins,
+               std::vector<GameObject *> &bombs) {
+    score += lights ? 10 : 20;
     this->IsVisible = false;
 }
