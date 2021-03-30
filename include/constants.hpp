@@ -34,7 +34,6 @@
 #define TIME_LIMIT 120.0f
 
 // RGB values for different colors
-// TODO: Set to nord theme
 #define COLOR_RED glm::vec3(1.0f, 0.0f, 0.0f)
 #define COLOR_GREEN glm::vec3(0.0f, 1.0f, 0.0f)
 #define COLOR_BLUE glm::vec3(0.0f, 0.0f, 1.0f)

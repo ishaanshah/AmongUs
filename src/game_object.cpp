@@ -73,7 +73,7 @@ std::vector<GameObject *> GameObject::Move(enum Direction direction,
         this->Position.y += velocity;
     }
 
-    // TODO: Check collisions
+    // Check collisions
     bool commitMove = true;
     std::pair<glm::vec2, glm::vec2> selfBox = GetBoundBox();
     for (auto hittable: hittables) {

@@ -2,7 +2,7 @@
 
 #include <GLFW/glfw3.h>
 #include <algorithm>
-#include <iostream> // TODO: remove this later
+#include <iostream>
 #include <string>
 #include <sstream>
 
@@ -174,7 +174,7 @@ void Game::Update(float dt, GLFWwindow *window) {
         } else {
             this->ImposterDirection = imposterMove;
         }
-        this->Imposter->Move(imposterMove, hittables, CHARACTER_VELOCITY * dt);
+        this->Imposter->Move(imposterMove, hittables, 1.1 * CHARACTER_VELOCITY * dt);
     }
 
     // Set light position

@@ -21,7 +21,7 @@ std::vector<GameObject> Maze::GenerateMaze() {
     // Run recursive backtracking algorithm
     RandomDFS(this->Cells[0][0]);
 
-    // TODO: Randomly remove some walls to create cycles
+    // Randomly remove some walls to create cycles
     for (int i = 0; i < NCOLS; i++) {
         for (int j = 0; j < NROWS-1; j++) {
             if (rand() % 100 < 20) {
