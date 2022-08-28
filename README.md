@@ -1,6 +1,4 @@
-# Assignment 1
-
-#### Roll No - 2019111028
+# AmongUs
 
 ## Steps to run
 
